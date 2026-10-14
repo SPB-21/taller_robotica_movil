@@ -1,0 +1,289 @@
+<?xml version="1.0"?>
+<sdf version="1.9">
+  <world name="pista">
+
+    <!-- Fisica y sistemas de Gazebo -->
+    <physics name="1ms" type="ignored">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+
+    <plugin filename="gz-sim-physics-system"
+            name="gz::sim::systems::Physics"/>
+    <plugin filename="gz-sim-scene-broadcaster-system"
+            name="gz::sim::systems::SceneBroadcaster"/>
+    <plugin filename="gz-sim-sensors-system"
+            name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin filename="gz-sim-user-commands-system"
+            name="gz::sim::systems::UserCommands"/>
+
+    <!-- Iluminacion -->
+    <light type="directional" name="sol">
+      <pose>0 0 10 0 0 0</pose>
+      <direction>0.3 0.3 -1</direction>
+    </light>
+
+    <!-- Piso -->
+    <model name="piso">
+      <static>true</static>
+      <link name="link">
+        <collision name="col">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>12 10</size>
+            </plane>
+          </geometry>
+        </collision>
+        <visual name="vis">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>12 10</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0.65 0.65 0.65 1</ambient>
+            <diffuse>0.65 0.65 0.65 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- PUNTO DE SPAWN (solo visual, sin colision): x=0.5 y=0 yaw=0 -->
+    <model name="marca_spawn">
+      <static>true</static>
+      <pose>0.5 0 0.001 0 0 0</pose>
+      <link name="link">
+        <visual name="vis">
+          <geometry><box><size>0.4 0.4 0.002</size></box></geometry>
+          <material>
+            <ambient>0.1 0.8 0.1 1</ambient>
+            <diffuse>0.1 0.8 0.1 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- TRAMO A: PASILLO INICIAL -->
+    <model name="muro_inicial_izquierdo">
+      <static>true</static>
+      <pose>1.7 1 0.25 0 0 0</pose>
+      <link name="link">
+        <collision name="col">
+          <geometry><box><size>3.4 0.1 0.5</size></box></geometry>
+        </collision>
+        <visual name="vis">
+          <geometry><box><size>3.4 0.1 0.5</size></box></geometry>
+          <material>
+            <ambient>0.8 0.2 0.2 1</ambient>
+            <diffuse>0.8 0.2 0.2 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="muro_inicial_derecho">
+      <static>true</static>
+      <pose>2 -1 0.25 0 0 0</pose>
+      <link name="link">
+        <collision name="col">
+          <geometry><box><size>4 0.1 0.5</size></box></geometry>
+        </collision>
+        <visual name="vis">
+          <geometry><box><size>4 0.1 0.5</size></box></geometry>
+          <material>
+            <ambient>0.8 0.2 0.2 1</ambient>
+            <diffuse>0.8 0.2 0.2 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- CURVA 1 (izquierda): cierre de esquina y TRAMO B vertical -->
+    <model name="muro_esquina_inferior">
+      <static>true</static>
+      <pose>4.775 -1 0.25 0 0 0</pose>
+      <link name="link">
+        <collision name="col">
+          <geometry><box><size>1.55 0.1 0.5</size></box></geometry>
+        </collision>
+        <visual name="vis">
+          <geometry><box><size>1.55 0.1 0.5</size></box></geometry>
+          <material>
+            <ambient>0.8 0.2 0.2 1</ambient>
+            <diffuse>0.8 0.2 0.2 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="curva_muro_izquierdo">
+      <static>true</static>
+      <pose>3.5 1.75 0.25 0 0 0</pose>
+      <link name="link">
+        <collision name="col">
+          <geometry><box><size>0.1 1.5 0.5</size></box></geometry>
+        </collision>
+        <visual name="vis">
+          <geometry><box><size>0.1 1.5 0.5</size></box></geometry>
+          <material>
+            <ambient>0.2 0.4 0.8 1</ambient>
+            <diffuse>0.2 0.4 0.8 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="curva_muro_derecho">
+      <static>true</static>
+      <pose>5.5 1.75 0.25 0 0 0</pose>
+      <link name="link">
+        <collision name="col">
+          <geometry><box><size>0.1 5.6 0.5</size></box></geometry>
+        </collision>
+        <visual name="vis">
+          <geometry><box><size>0.1 5.6 0.5</size></box></geometry>
+          <material>
+            <ambient>0.2 0.4 0.8 1</ambient>
+            <diffuse>0.2 0.4 0.8 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- CURVA 2 (izquierda): TRAMO C hacia el oeste -->
+    <model name="tramo_c_inferior">
+      <static>true</static>
+      <pose>1.45 2.5 0.25 0 0 0</pose>
+      <link name="link">
+        <collision name="col">
+          <geometry><box><size>4.0 0.1 0.5</size></box></geometry>
+        </collision>
+        <visual name="vis">
+          <geometry><box><size>4.0 0.1 0.5</size></box></geometry>
+          <material>
+            <ambient>0.2 0.4 0.8 1</ambient>
+            <diffuse>0.2 0.4 0.8 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="tramo_c_superior">
+      <static>true</static>
+      <pose>2.5 4.5 0.25 0 0 0</pose>
+      <link name="link">
+        <collision name="col">
+          <geometry><box><size>6.1 0.1 0.5</size></box></geometry>
+        </collision>
+        <visual name="vis">
+          <geometry><box><size>6.1 0.1 0.5</size></box></geometry>
+          <material>
+            <ambient>0.2 0.4 0.8 1</ambient>
+            <diffuse>0.2 0.4 0.8 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="tramo_c_final">
+      <static>true</static>
+      <pose>-0.5 3.5 0.25 0 0 0</pose>
+      <link name="link">
+        <collision name="col">
+          <geometry><box><size>0.1 2.1 0.5</size></box></geometry>
+        </collision>
+        <visual name="vis">
+          <geometry><box><size>0.1 2.1 0.5</size></box></geometry>
+          <material>
+            <ambient>0.2 0.4 0.8 1</ambient>
+            <diffuse>0.2 0.4 0.8 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- ESTRECHAMIENTO: DOS BARRERAS LATERALES (paso libre 0.8 m) -->
+    <model name="estrechamiento_izquierdo">
+      <static>true</static>
+      <pose>1.2 0.45 0.2 0 0 0</pose>
+      <link name="link">
+        <collision name="col">
+          <geometry><box><size>0.5 0.1 0.4</size></box></geometry>
+        </collision>
+        <visual name="vis">
+          <geometry><box><size>0.5 0.1 0.4</size></box></geometry>
+          <material>
+            <ambient>0.9 0.6 0.1 1</ambient>
+            <diffuse>0.9 0.6 0.1 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="estrechamiento_derecho">
+      <static>true</static>
+      <pose>1.2 -0.45 0.2 0 0 0</pose>
+      <link name="link">
+        <collision name="col">
+          <geometry><box><size>0.5 0.1 0.4</size></box></geometry>
+        </collision>
+        <visual name="vis">
+          <geometry><box><size>0.5 0.1 0.4</size></box></geometry>
+          <material>
+            <ambient>0.9 0.6 0.1 1</ambient>
+            <diffuse>0.9 0.6 0.1 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- OBSTACULOS -->
+    <model name="obstaculo_1">
+      <static>true</static>
+      <pose>2.2 0 0.2 0 0 0</pose>
+      <link name="link">
+        <collision name="col">
+          <geometry><box><size>0.3 0.3 0.4</size></box></geometry>
+        </collision>
+        <visual name="vis">
+          <geometry><box><size>0.3 0.3 0.4</size></box></geometry>
+          <material>
+            <ambient>0.2 0.7 0.2 1</ambient>
+            <diffuse>0.2 0.7 0.2 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="obstaculo_2">
+      <static>true</static>
+      <pose>4.5 2.5 0.2 0 0 0</pose>
+      <link name="link">
+        <collision name="col">
+          <geometry><box><size>0.3 0.3 0.4</size></box></geometry>
+        </collision>
+        <visual name="vis">
+          <geometry><box><size>0.3 0.3 0.4</size></box></geometry>
+          <material>
+            <ambient>0.2 0.7 0.2 1</ambient>
+            <diffuse>0.2 0.7 0.2 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="obstaculo_3">
+      <static>true</static>
+      <pose>1.5 3.9 0.2 0 0 0</pose>
+      <link name="link">
+        <collision name="col">
+          <geometry><cylinder><radius>0.2</radius><length>0.4</length></cylinder></geometry>
+        </collision>
+        <visual name="vis">
+          <geometry><cylinder><radius>0.2</radius><length>0.4</length></cylinder></geometry>
+          <material>
+            <ambient>0.2 0.7 0.2 1</ambient>
+            <diffuse>0.2 0.7 0.2 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+  </world>
+</sdf>
